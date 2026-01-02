@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Data Science Student</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES & THEME --- */
+        :root {
+            --bg-body: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.9);
+            --bg-card: #f8f9fa;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --accent: #2a59d9; /* Pixel Blue */
+            --accent-glow: rgba(42, 89, 217, 0.2);
+            --border: #e0e0e0;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --radius: 16px;
+            --nav-height: 70px;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0a0a0a;
+            --bg-nav: rgba(10, 10, 10, 0.9);
+            --bg-card: #161616;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --accent: #4c8df5;
+            --accent-glow: rgba(76, 141, 245, 0.2);
+            --border: #333333;
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+            padding-top: var(--nav-height);
+        }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--text-main); }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--nav-height);
+            background: var(--bg-nav);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+
+        .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent); }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-btn {
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+        .nav-btn:hover, .nav-btn.active { color: var(--accent); }
+        
+        /* Underline animation for nav */
+        .nav-btn::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -5px; left: 0; background: var(--accent);
+            transition: width 0.3s;
+        }
+        .nav-btn:hover::after, .nav-btn.active::after { width: 100%; }
+
+        .controls { display: flex; align-items: center; gap: 20px; }
+
+        /* Theme Toggle */
+        .theme-switch {
+            background: none; border: none;
+            color: var(--text-main); font-size: 1.2rem; cursor: pointer;
+        }
+
+        /* Mobile Menu */
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- PAGE SECTIONS (Tabs) --- */
+        .page-section {
+            display: none; /* Hidden by default */
+            min-height: calc(100vh - var(--nav-height));
+            padding: 40px 5%;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .page-section.active-section { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HOME TAB --- */
+        .home-content {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            height: 80vh; max-width: 800px;
+        }
+
+        .badge {
+            background: var(--accent-glow); color: var(--accent);
+            padding: 5px 15px; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 20px;
+        }
+
+        .home-content h1 {
+            font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px;
+        }
+
+        .highlight { color: var(--accent); }
+
+        .home-content p {
+            font-size: 1.1rem; color: var(--text-muted);
+            max-width: 600px; margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            background: var(--accent); color: white;
+            padding: 12px 30px; border-radius: 50px;
+            font-weight: 600; display: inline-flex; align-items: center; gap: 10px;
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--accent-glow); }
+
+        /* --- ABOUT TAB --- */
+        .about-grid {
+            display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: var(--bg-card); padding: 30px;
+            border-radius: var(--radius); border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item {
+            position: relative; padding-left: 20px;
+            border-left: 2px solid var(--border); margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -6px; top: 5px;
+            width: 10px; height: 10px; background: var(--accent); border-radius: 50%;
+        }
+        .timeline-date { font-size: 0.85rem; color: var(--text-muted); }
+        
+        /* --- SKILLS TAB --- */
+        .skills-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px; margin-top: 30px;
+        }
+
+        .skill-card {
+            background: var(--bg-card); padding: 25px;
+            border-radius: var(--radius); border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+        .skill-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .skill-icon { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
+        
+        /* --- PROJECTS TAB --- */
+        .project-header {
+            text-align: center; margin-bottom: 40px;
+        }
+        
+        .pdf-download-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-body) 100%);
+            border: 2px dashed var(--accent);
+            border-radius: var(--radius);
+            padding: 50px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            transition: 0.3s;
+        }
+        
+        .pdf-download-card:hover {
+            background: var(--accent-glow);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: var(--nav-height); right: -100%;
+                width: 70%; height: 100vh; background: var(--bg-body);
+                flex-direction: column; padding: 40px;
+                border-left: 1px solid var(--border); transition: 0.4s;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: block; }
+            .about-grid { grid-template-columns: 1fr; }
+            .home-content h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">PORTFOLIO<span>.</span></div>
+        <ul class="nav-links" id="navLinks">
+            <li class="nav-btn active" onclick="switchTab('home')">Home</li>
+            <li class="nav-btn" onclick="switchTab('about')">About</li>
+            <li class="nav-btn" onclick="switchTab('skills')">Skills</li>
+            <li class="nav-btn" onclick="switchTab('projects')">Projects</li>
+        </ul>
+        <div class="controls">
+            <button class="theme-switch" id="themeToggle"><i class="fas fa-moon"></i></button>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section id="home" class="page-section active-section">
+        <div class="home-content">
+            <div class="badge">DATA SCIENCE STUDENT 🚀</div>
+            <h1>Chandradeep<br><span class="highlight">Reddy</span></h1>
+            <p>I am a B.Tech student in CSE Data Science at SNIST. Passionate about Big Data, Analytics, and solving real-world problems.</p>
+            <div style="display: flex; gap: 15px;">
+                <a href="#" onclick="switchTab('projects')" class="cta-btn">View Work <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="cta-btn" style="background: transparent; border: 1px solid var(--border); color: var(--text-main);">Contact Me</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <h2 style="font-size: 2.5rem; margin-bottom: 10px;">About Me</h2>
+        <p style="color: var(--text-muted);">A glimpse into my background, education, and hobbies.</p>
+
+        <div class="about-grid">
+            <div>
+                <div class="info-card">
+                    <h3><i class="fas fa-user-graduate"></i> Education</h3>
+                    <br>
+                    <div class="timeline-item">
+                        <h4>B.Tech CSE (Data Science)</h4>
+                        <div class="timeline-date">2023 - 2027</div>
+                        <p>Sreenidhi Institute of Science and Technology (SNIST)</p>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class="fas fa-rocket"></i> Bio</h3>
+                    <br>
+                    <p style="color: var(--text-muted); line-height: 1.7;">
+                        I am currently building strong foundations in data analytics, SQL, and cloud tools. I believe in learning by doing and staying curious. 
+                        <br><br>
+                        Beyond academics, I enjoy writing ✍️, fitness 💪, and sports 🏏. I've also earned skill badges from Google Cloud and FutureSkills Prime.
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <div class="info-card">
+                    <h3><i class="fas fa-users"></i> Leadership</h3>
+                    <br>
+                    <div class="timeline-item">
+                        <h4>The Infinitix Club</h4>
+                        <p>Designing Team Member & Team Guide. Mentoring juniors and leading design initiatives.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>NCC-A Cadet</h4>
+                        <p>Learned discipline, teamwork, and consistency through rigorous training.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="page-section">
+        <h2 style="font-size: 2.5rem; margin-bottom: 10px;">Technical Toolkit</h2>
+        <p style="color: var(--text-muted);">Tools and technologies I use to drive insights.</p>
+
+        <div class="skills-container">
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-python"></i></div>
+                <h3>Python & SQL</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Data manipulation, scripting, and database management.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fas fa-chart-pie"></i></div>
+                <h3>Data Analysis</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Power BI, Excel, and Statistical Analysis concepts.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                <h3>Web Development</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">HTML5, CSS3, and Designing interfaces.</p>
+            </div>
+            <div class="skill-card">
+                <div class="skill-icon"><i class="fas fa-server"></i></div>
+                <h3>DevOps & Cloud</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Basics of CI/CD, Google Cloud, and deployment.</p>
+            </div>
+             <div class="skill-card">
+                <div class="skill-icon"><i class="fas fa-tasks"></i></div>
+                <h3>Project Mgmt</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">Leadership, Team Guide, and Organization.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="page-section">
+        <div class="project-header">
+            <h2>My Projects</h2>
+            <p style="color: var(--text-muted);">A collection of my case studies and technical work.</p>
+        </div>
+
+        <div class="pdf-download-card">
+            <i class="fas fa-file-pdf" style="font-size: 3rem; color: var(--accent); margin-bottom: 20px;"></i>
+            <h3>Download Full Portfolio PDF</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">
+                Get detailed documentation of my projects, including code snippets, data visualizations, and methodology.
+            </p>
+            <a href="my-projects.pdf" download class="cta-btn">
+                <i class="fas fa-download"></i> Download PDF
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // --- 1. Tab Switching Logic ---
+        function switchTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            // Show target section
+            document.getElementById(tabId).classList.add('active-section');
+
+            // Update Nav Active State
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Find the button that was clicked (approximate match) and add active
+            const navItems = document.querySelectorAll('.nav-btn');
+            if(tabId === 'home') navItems[0].classList.add('active');
+            if(tabId === 'about') navItems[1].classList.add('active');
+            if(tabId === 'skills') navItems[2].classList.add('active');
+            if(tabId === 'projects') navItems[3].classList.add('active');
+
+            // Close mobile menu if open
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+
+        // --- 2. Theme Toggle Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        // Check local storage
+        if(localStorage.getItem('theme') === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+
+        // --- 3. Mobile Hamburger Logic ---
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
